@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { getUserNameFromLocalStorage } from 'utilities/local-storage'
+import { NameLocalStorageManager } from 'utilities/local-storage'
 
 export default class User {
   name
@@ -13,7 +13,7 @@ export default class User {
   }
 
   initFromLocalStorage() {
-    const name = getUserNameFromLocalStorage()
+    const name = NameLocalStorageManager.getValue()
 
     if (!name) {
       return

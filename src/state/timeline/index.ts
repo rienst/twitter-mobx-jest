@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import { Tweet } from 'types'
-import { getValidTweetsFromLocalStorage } from 'utilities/local-storage'
+import { TweetsLocalStorageManager } from 'utilities/local-storage'
 import { v4 as createId } from 'uuid'
 
 export default class Timeline {
@@ -15,25 +15,10 @@ export default class Timeline {
   }
 
   initFromLocalStorage() {
-    const tweetsFromLocalStorage = getValidTweetsFromLocalStorage()
-
-    if (!tweetsFromLocalStorage) {
-      return
-    }
-
-    this.tweets = tweetsFromLocalStorage
+    this.tweets = TweetsLocalStorageManager.getValue() || []
   }
 
-  static validateTweetInput = (author: string, content: string) =>
-    author.length && content.length
-
   addTweet(author: string, content: string) {
-    const valid = Timeline.validateTweetInput(author, content)
-
-    if (!valid) {
-      return
-    }
-
     const newTweets = this.tweets
 
     newTweets.push({ id: createId(), author, content, postedOn: new Date() })

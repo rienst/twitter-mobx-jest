@@ -1,11 +1,11 @@
 import { createContext, FC, useContext } from 'react'
 import { autorun } from 'mobx'
-import {
-  timelineTweetsLocalStorageKey,
-  userNameLocalStorageKey,
-} from 'utilities/local-storage'
 import User from 'state/user'
 import Timeline from 'state/timeline'
+import {
+  NameLocalStorageManager,
+  TweetsLocalStorageManager,
+} from 'utilities/local-storage'
 
 const globalState = {
   user: new User(),
@@ -13,17 +13,11 @@ const globalState = {
 }
 
 autorun(() => {
-  localStorage.setItem(
-    userNameLocalStorageKey,
-    JSON.stringify(globalState.user.name)
-  )
+  NameLocalStorageManager.setValue(globalState.user.name)
 })
 
 autorun(() => {
-  localStorage.setItem(
-    timelineTweetsLocalStorageKey,
-    JSON.stringify(globalState.timeline.tweets)
-  )
+  TweetsLocalStorageManager.setValue(globalState.timeline.tweets)
 })
 
 const globalStateContext = createContext(undefined as any as typeof globalState)
